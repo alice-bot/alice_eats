@@ -123,10 +123,12 @@ defmodule Alice.Handlers.Eats do
   def choose(conn) do
     with groups <- Map.values(get_groups(conn)),
          {:ok, group} <- get_current_group(groups, conn),
-         %Group{restaurants: restaurants} <- group do
+         {:ok, restaurants} <- Group.get_restaurants(group) do
       "You should get some eats at *#{Enum.random(restaurants)}*!"
     else
       {:error, :nogroup} -> @nogroup_error_message
+      {:error, :no_restaurants} ->
+        "You don't have any restaurants. You should add some."
     end
     |> reply(conn)
   end

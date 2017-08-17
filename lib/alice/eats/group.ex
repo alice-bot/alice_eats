@@ -26,4 +26,7 @@ defmodule Alice.Eats.Group do
   def remove_restaurant(%Group{restaurants: restaurants}=group, restaurant) do
     {:ok, %{group | restaurants: List.delete(restaurants, restaurant)}}
   end
+
+  def get_restaurants(%Group{restaurants: []}),    do: {:error, :no_restaurants}
+  def get_restaurants(%Group{restaurants: rants}), do: {:ok, rants}
 end
